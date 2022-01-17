@@ -6,7 +6,7 @@ const request = supertest(app);
 const { db } = require('../lib/models');
 
 beforeAll(async () => {
-  await db.drop();  
+  await db.drop();
   await db.sync();
 });
 afterAll(async () => {
@@ -16,7 +16,6 @@ afterAll(async () => {
 describe('Testing the food router', () => {
 
   it('Should create new food data', () => {
-
     const testArray = [
       { 'dishName': 'wings', 'quantity': '24' },
       { 'dishName': 'soup', 'quantity': '5' },
@@ -24,7 +23,7 @@ describe('Testing the food router', () => {
     ];
     testArray.forEach(async (testObj) => {
       const response = await request.post('/food').send(testObj);
-      expect(response.status).toEqual(200);
+      expect(response.status).toEqual(201);
       expect(response.body.quantity).toEqual(testObj.quantity);
       expect(response.body.dishName).toEqual(testObj.dishName);
       console.log(response.body);
@@ -37,7 +36,7 @@ describe('Testing the food router', () => {
     // expect(response.body.count).toEqual(3);
     expect(response.body).toBeDefined;
   });
-  
+
   it('Should read one from food data by id', async () => {
     const response = await request.get('/food/3');
     expect(response.status).toEqual(200);
@@ -56,9 +55,9 @@ describe('Testing the food router', () => {
   });
 
   it('Should find one by id and remove', async () => {
-    await request.delete('/food/2');
+    const deleteResponse = await request.delete('/food/2');
     const updatedTable = await request.get('/food');
-    // console.log(updatedTable.body);
+    expect(deleteResponse.status).toEqual(204);
     expect(updatedTable.body.length).toEqual(2);
   });
 

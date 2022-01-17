@@ -16,8 +16,7 @@ afterAll(async () => {
 describe('Testing the food router', () => {
 
   it('Should create new food data', () => {
-    // const testObj = {'dishName': 'wings', 'quantity': '24'};
-    // const testObj = {'dishName': 'soup', 'quantity': '5'};
+
     const testArray = [
       { 'dishName': 'wings', 'quantity': '24' },
       { 'dishName': 'soup', 'quantity': '5' },
@@ -46,6 +45,7 @@ describe('Testing the food router', () => {
     expect(response.body.id).toEqual(3);
 
   });
+
   it('Should find one by id and update', async () => {
     const amendedDish = { 'dishName': 'ice cream', 'quantity': '5' };
     const response = await request.put('/food/2').send(amendedDish);
@@ -54,4 +54,12 @@ describe('Testing the food router', () => {
     const updatedRow = await request.get('/food/2');
     expect(updatedRow.body.dishName).toEqual('ice cream');
   });
+
+  it('Should find one by id and remove', async () => {
+    await request.delete('/food/2');
+    const updatedTable = await request.get('/food');
+    // console.log(updatedTable.body);
+    expect(updatedTable.body.length).toEqual(2);
+  });
+
 });

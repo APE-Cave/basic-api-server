@@ -46,4 +46,12 @@ describe('Testing the food router', () => {
     expect(response.body.id).toEqual(3);
 
   });
+  it('Should find one by id and update', async () => {
+    const amendedDish = { 'dishName': 'ice cream', 'quantity': '5' };
+    const response = await request.put('/food/2').send(amendedDish);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual([1]);
+    const updatedRow = await request.get('/food/2');
+    expect(updatedRow.body.dishName).toEqual('ice cream');
+  });
 });

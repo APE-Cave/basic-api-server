@@ -25,25 +25,25 @@ describe('Testing the food router', () => {
     ];
     testArray.forEach(async (testObj) => {
       const response = await request.post('/food').send(testObj);
-      console.log(response.body);
       expect(response.status).toEqual(200);
       expect(response.body.quantity).toEqual(testObj.quantity);
       expect(response.body.dishName).toEqual(testObj.dishName);
+      console.log(response.body);
     });
   });
 
   it('Should read all from food data', async () => {
     const response = await request.get('/food');
     expect(response.status).toEqual(200);
-    expect(response.body.count).toEqual(3);
-    expect(response.body.results).toBeDefined;
+    // expect(response.body.count).toEqual(3);
+    expect(response.body).toBeDefined;
   });
   
   it('Should read one from food data by id', async () => {
-    const response = await request.get('/food/1');
+    const response = await request.get('/food/3');
     expect(response.status).toEqual(200);
-    expect(response.body.count).toEqual(1);
-    expect(response.body.results.id).toEqual(1);
+    // expect(response.body.count).toEqual(1);
+    expect(response.body.id).toEqual(3);
 
   });
 });
